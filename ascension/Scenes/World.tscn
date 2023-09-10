@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cboctk2h46uwh"]
+
+[ext_resource type="PackedScene" uid="uid://cpsdp3ikah04q" path="res://Scenes/Block.tscn" id="1_yyflf"]
+[ext_resource type="PackedScene" uid="uid://f7a2ls180ttt" path="res://Scenes/Player.tscn" id="2_3ptcj"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="AnimatableBody2D" parent="." instance=ExtResource("1_yyflf")]
+position = Vector2(156, 321)
+scale = Vector2(9.92, 1)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_3ptcj")]
+position = Vector2(123, 96)
