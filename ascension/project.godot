@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 window/size/viewport_width=640
 window/size/viewport_height=480
 
+[physics]
+
+2d/default_gravity=1380.0
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

@@ -128,3 +128,5 @@ frame_progress = 0.326104
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.171875, 0.234375)
 texture = ExtResource("3_4fu03")
+
+[node name="Camera2D" type="Camera2D" parent="."]
