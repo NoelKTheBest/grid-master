@@ -13,10 +13,8 @@ func _ready():
 func _process(delta):
 	# get inputs
 	# move_and_collide()
+	var x_velocity = Input.get_axis("left", "right")
+	var y_velocity = Input.get_axis("up", "down")
+	move_and_collide(Vector2(x_velocity, y_velocity))
 	pass
 
-# func _on_collision_enter():
-	# if collided with another block
-		# set active to false
-	# if collided with player
-		# set player velocity to our velocity
