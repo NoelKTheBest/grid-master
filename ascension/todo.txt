@@ -7,3 +7,5 @@ To Do:
 - Update Game.gd to check adjacent rows and columns
 
 - Write function to check the main & adjacent rows and columns and find the block that is the closest.
+
+- Add camera to scene and update position when the player is moved upwards on the screen. player dies when they are no longer visible in the viewport
