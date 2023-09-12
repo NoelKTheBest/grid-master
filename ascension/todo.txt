@@ -1,6 +1,7 @@
 To Do:
 
-I need to refactor the code in Grid.gd to be able toget the shape size in pixels of a block and 
-generate a new grid of positions based on the blocks size. I would like to be able to change the 
-size of the block if desired just by changing either the scale of the CollisionShape or the size
-of the shape in the block scene
+- Create an object pool to store the most amount of block nodes that we will for the game
+
+- Create a visible on screen grid
+
+- Update Game.gd to check adjacent rows and columns
