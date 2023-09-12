@@ -5,3 +5,5 @@ To Do:
 - Create a visible on screen grid
 
 - Update Game.gd to check adjacent rows and columns
+
+- Write function to check the main & adjacent rows and columns and find the block that is the closest.
