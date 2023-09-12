@@ -4,11 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://c003khs5mn4fk" path="res://Scenes/MovableBlock.tscn" id="1_yyflf"]
 
 [node name="Node2D" type="Node2D"]
+
+[node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_tcm3s")
+grid_rows = 7
 
 [node name="RigidBody2D" parent="." instance=ExtResource("1_yyflf")]
-position = Vector2(150, 150)
-
-[node name="RigidBody2D2" parent="." instance=ExtResource("1_yyflf")]
-position = Vector2(447, 320)
-script = null
+position = Vector2(220, 50)
