@@ -24,9 +24,6 @@ func _ready():
 	screen_width = ProjectSettings.get_setting("display/window/size/viewport_width")
 	screen_height = ProjectSettings.get_setting("display/window/size/viewport_height")
 	
-	print(screen_width)
-	print(screen_height)
-	
 	initial_position = Vector2((screen_width / 2) - (grid_width / 2) + (inc / 2),
 	 screen_height - (screen_height % (int)(inc / 2)) - inc)
 	
@@ -35,16 +32,16 @@ func _ready():
 		for j in grid_columns:
 			grid[i].append(Cell.new()) # Set a starter value for each position
 			grid[i][j].position = initial_position + Vector2(inc * j, -inc * i)
-			grid[i][j].occupied = false
+			grid[i][j].occupied = true if randi_range(0, 1) == 1 else false
 	
-	_print_grid()
+	#_print_grid()
 
 
 func _process(delta):
 	if (Input.is_action_just_pressed("ui_accept")):
 		_append_new_row()
 		_pop_last_row()
-		_print_grid()
+		#_print_grid()
 
 
 
@@ -65,7 +62,7 @@ func _append_new_row():
 	for j in grid_columns:
 		grid[len].append(Cell.new())
 		grid[len][j].position = grid[len - 1][0].position + Vector2(inc * j, -inc)
-		grid[len][j].occupied = false
+		grid[len][j].occupied = randi_range(0, 1)
 
 
 func _pop_last_row():

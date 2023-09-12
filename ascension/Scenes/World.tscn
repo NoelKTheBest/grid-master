@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://cboctk2h46uwh"]
+[gd_scene load_steps=4 format=3 uid="uid://cboctk2h46uwh"]
 
+[ext_resource type="Script" path="res://Scripts/Game.gd" id="1_37aon"]
 [ext_resource type="Script" path="res://Scripts/Grid.gd" id="1_tcm3s"]
 [ext_resource type="PackedScene" uid="uid://c003khs5mn4fk" path="res://Scenes/MovableBlock.tscn" id="1_yyflf"]
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_37aon")
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_tcm3s")

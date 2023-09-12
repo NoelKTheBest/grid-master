@@ -1,6 +1,5 @@
-[gd_scene load_steps=4 format=3 uid="uid://c003khs5mn4fk"]
+[gd_scene load_steps=3 format=3 uid="uid://c003khs5mn4fk"]
 
-[ext_resource type="Script" path="res://Scripts/Block.gd" id="1_bvexk"]
 [ext_resource type="Texture2D" uid="uid://dqmorwvm5o061" path="res://icon.svg" id="1_hj4xm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jyc7"]
@@ -8,7 +7,6 @@
 [node name="RigidBody2D" type="RigidBody2D"]
 position = Vector2(164, 64)
 gravity_scale = 0.0
-script = ExtResource("1_bvexk")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
