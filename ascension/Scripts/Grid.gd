@@ -34,14 +34,15 @@ func _ready():
 			grid[i][j].position = initial_position + Vector2(inc * j, -inc * i)
 			grid[i][j].occupied = true if randi_range(0, 1) == 1 else false
 	
-	#_print_grid()
+	_print_grid()
 
 
 func _process(delta):
-	if (Input.is_action_just_pressed("ui_accept")):
-		_append_new_row()
-		_pop_last_row()
+	#if (Input.is_action_just_pressed("ui_accept")):
+		#_append_new_row()
+		#_pop_last_row()
 		#_print_grid()
+	pass
 
 
 
@@ -71,6 +72,14 @@ func _pop_last_row():
 
 func _check_row(i):
 	for j in grid_columns:
+		if grid[i][j].occupied:
+			return grid[i][j]
+	
+	return false
+
+
+func _check_column(j):
+	for i in grid_rows:
 		if grid[i][j].occupied:
 			return grid[i][j]
 	

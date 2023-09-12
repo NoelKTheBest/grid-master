@@ -80,8 +80,11 @@ func _process(delta):
 		else:
 			$RigidBody2D.position = Vector2(grid_outer_bounds.x, _get_position("y"))
 	
-	print("row: " + str(row))
-	print("column: " + str(column))
+	if Input.is_action_just_pressed("set_block"):
+		if is_select_row : print($Grid._check_row(row))
+		elif is_select_column : print($Grid._check_column(column))
+	#print("row: " + str(row))
+	#print("column: " + str(column))
 
 
 func _get_position(axis):
