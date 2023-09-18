@@ -75,7 +75,7 @@ func _check_row(i):
 		if grid[i][j].occupied:
 			return grid[i][j]
 	
-	return false
+	return null
 
 
 func _check_column(j):
@@ -83,7 +83,7 @@ func _check_column(j):
 		if grid[i][j].occupied:
 			return grid[i][j]
 	
-	return false
+	return null
 
 
 class Cell :
