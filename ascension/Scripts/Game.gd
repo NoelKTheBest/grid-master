@@ -25,8 +25,8 @@ func _ready():
 	is_select_column = false
 	is_going_right = true
 	
-	print(grid_position)
-	print(grid_outer_bounds)
+	#print(grid_position)
+	#print(grid_outer_bounds)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -81,8 +81,16 @@ func _process(delta):
 			$RigidBody2D.position = Vector2(grid_outer_bounds.x, _get_position("y"))
 	
 	if Input.is_action_just_pressed("set_block"):
-		if is_select_row : print($Grid._check_row(row))
-		elif is_select_column : print($Grid._check_column(column))
+		if is_select_row:
+			var cell = $Grid._check_row(row)
+			if cell != null:
+				$RigidBody2D.position = cell.position
+				is_select_row = false
+		elif is_select_column:
+			var cell = $Grid._check_row(column)
+			if cell != null:
+				$RigidBody2D.position = cell.position
+				is_select_column = false
 	#print("row: " + str(row))
 	#print("column: " + str(column))
 
