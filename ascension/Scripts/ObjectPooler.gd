@@ -18,7 +18,7 @@ func _ready():
 		instance.visible = false
 		instance.position = grid_position
 	
-	print(blocks)
+	#print(blocks)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

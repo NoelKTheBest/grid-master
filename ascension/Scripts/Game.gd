@@ -11,9 +11,9 @@ var init_column
 var row
 var column
 
-var is_select_row
-var is_select_column
-var is_going_right
+var selecting_row
+var selecting_column
+var going_right
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,29 +21,29 @@ func _ready():
 	init_column = grid_columns - floor(grid_columns / 2)
 	row = init_row
 	column = init_column
-	is_select_row = false
-	is_select_column = false
-	is_going_right = true
+	selecting_row = false
+	selecting_column = false
+	going_right = true
 	
-	#print(grid_position)
-	#print(grid_outer_bounds)
+	print(grid_position)
+	print(grid_outer_bounds)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# Select a column or row to start
-	if !is_select_column and !is_select_row:
+	if !selecting_column and !selecting_row:
 		if Input.is_action_just_pressed("left"):
-			is_select_row = true
-			is_going_right = false
+			selecting_row = true
+			going_right = false
 		elif Input.is_action_just_pressed("right"):
-			is_select_row = true
-			is_going_right = true
+			selecting_row = true
+			going_right = true
 		elif Input.is_action_just_pressed("up"):
-			is_select_column = true
-	elif is_select_column:
+			selecting_column = true
+	elif selecting_column:
 		if Input.is_action_just_pressed("down"):
-			is_select_column = false
+			selecting_column = false
 		
 		if Input.is_action_just_pressed("right"):
 			column += 1
@@ -51,20 +51,20 @@ func _process(delta):
 			column -= 1
 		
 		column = clamp(column, 0, grid_columns - 1)
-	elif is_select_row:
-		if Input.is_action_just_pressed("right") and !is_going_right:
-			is_select_row = false
-		elif Input.is_action_just_pressed("left") and is_going_right:
-			is_select_row = false
+	elif selecting_row:
+		if Input.is_action_just_pressed("right") and !going_right:
+			selecting_row = false
+		elif Input.is_action_just_pressed("left") and going_right:
+			selecting_row = false
 		
-		if !is_going_right:
+		if !going_right:
 			if Input.is_action_just_pressed("up"):
 				row += 1
 			elif Input.is_action_just_pressed("down"):
 				row -= 1
 			
 			row = clamp(row, 0, grid_rows - 1)
-		elif is_going_right:
+		elif going_right:
 			if Input.is_action_just_pressed("up"):
 				row += 1
 			elif Input.is_action_just_pressed("down"):
@@ -72,28 +72,42 @@ func _process(delta):
 			
 			row = clamp(row, 0, grid_rows - 1)
 	
-	if is_select_column:
+	if selecting_column:
 		$RigidBody2D.position = Vector2(_get_position("x"), grid_outer_bounds.y)
-	elif is_select_row:
-		if !is_going_right:
-			$RigidBody2D.position = Vector2(grid_outer_bounds.x + ((init_column + 1) * grid_inc), _get_position("y"))
+		#$Grid.queue_redraw()
+	elif selecting_row:
+		if !going_right:
+			$RigidBody2D.position = Vector2(grid_outer_bounds.x + ((grid_columns + 1) * grid_inc),
+			 _get_position("y"))
 		else:
 			$RigidBody2D.position = Vector2(grid_outer_bounds.x, _get_position("y"))
+		
+		$Grid.queue_redraw()
 	
 	if Input.is_action_just_pressed("set_block"):
-		if is_select_row:
-			var cell = $Grid._check_row(row)
+		if selecting_row:
+			print(row)
+			var cell = $Grid._check_row(row, going_right, $RigidBody2D.position)
 			if cell != null:
 				$RigidBody2D.position = cell.position
-				is_select_row = false
-		elif is_select_column:
-			var cell = $Grid._check_row(column)
+				selecting_row = false
+		elif selecting_column:
+			print(column)
+			var cell = $Grid._check_column(column)
 			if cell != null:
 				$RigidBody2D.position = cell.position
-				is_select_column = false
+				selecting_column = false
 	#print("row: " + str(row))
 	#print("column: " + str(column))
 
+
+func _draw():
+	pass
+	#print(selecting_row)
+	#if selecting_row:
+	#	draw_rect(Rect2(grid_position.x - (grid_inc / 2), _get_position("y") - (grid_inc / 2),
+	#	 grid_columns * grid_inc, grid_inc), Color.ORANGE, false, 1)
+	
 
 func _get_position(axis):
 	if axis == "x" : return $Grid.grid[row][column].position.x

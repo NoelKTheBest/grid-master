@@ -4,6 +4,7 @@ extends Node2D
 @export var grid_rows = 5
 
 var grid = []
+var occupied_spaces = []
 var block_scale
 var initial_position
 var inc
@@ -33,6 +34,11 @@ func _ready():
 			grid[i].append(Cell.new()) # Set a starter value for each position
 			grid[i][j].position = initial_position + Vector2(inc * j, -inc * i)
 			grid[i][j].occupied = true if randi_range(0, 1) == 1 else false
+			
+			if grid[i][j].occupied:
+				occupied_spaces.append(Vector2(grid[i][j].position.x, grid[i][j].position.y))
+	
+	print(occupied_spaces)
 	
 	_print_grid()
 
@@ -44,6 +50,10 @@ func _process(delta):
 		#_print_grid()
 	pass
 
+
+func _draw():
+	for v in occupied_spaces:
+		draw_rect(Rect2(v.x - (25.0 / 2), v.y - (25.0 / 2), 25.0, 25.0), Color.GOLD)
 
 
 func _print_grid():
@@ -70,12 +80,24 @@ func _pop_last_row():
 	grid.pop_front()
 
 
-func _check_row(i):
+func _check_row(i, going_right, pos):
+	var min_x = 1000
+	var cell
+	
 	for j in grid_columns:
 		if grid[i][j].occupied:
-			return grid[i][j]
+			if !going_right:
+				var a = pos.x - grid[i][j].position.x
+				if a < min_x:
+					min_x = a
+					cell = grid[i][j]
+			else:
+				var a = grid[i][j].position.x - pos.x
+				if a < min_x:
+					min_x = a
+					cell = grid[i][j]
 	
-	return null
+	return cell
 
 
 func _check_column(j):

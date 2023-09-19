@@ -15,4 +15,4 @@ script = ExtResource("1_tcm3s")
 position = Vector2(398, 201)
 
 [node name="RigidBody2D" parent="." instance=ExtResource("1_yyflf")]
-position = Vector2(220, 50)
+position = Vector2(120, 50)
