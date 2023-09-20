@@ -1,3 +1,5 @@
+# Grid.gd contains all necessary functions for grid initialization, and manipulation
+
 extends Node2D
 
 @export var grid_columns = 3
@@ -37,18 +39,6 @@ func _ready():
 			
 			if grid[i][j].occupied:
 				occupied_spaces.append(Vector2(grid[i][j].position.x, grid[i][j].position.y))
-	
-	print(occupied_spaces)
-	
-	_print_grid()
-
-
-func _process(delta):
-	#if (Input.is_action_just_pressed("ui_accept")):
-		#_append_new_row()
-		#_pop_last_row()
-		#_print_grid()
-	pass
 
 
 func _draw():
@@ -56,7 +46,7 @@ func _draw():
 		draw_rect(Rect2(v.x - (25.0 / 2), v.y - (25.0 / 2), 25.0, 25.0), Color.GOLD)
 
 
-func _print_grid():
+func print_grid():
 	print("------------New Grid------------")
 	
 	for i in grid_rows:
@@ -66,21 +56,21 @@ func _print_grid():
 	print("------------Done------------")
 
 
-func _append_new_row():
+func append_new_row():
 	grid.append([])
-	var len = grid.size() - 1
+	var grid_len = grid.size() - 1
 	
 	for j in grid_columns:
-		grid[len].append(Cell.new())
-		grid[len][j].position = grid[len - 1][0].position + Vector2(inc * j, -inc)
-		grid[len][j].occupied = randi_range(0, 1)
+		grid[grid_len].append(Cell.new())
+		grid[grid_len][j].position = grid[grid_len - 1][0].position + Vector2(inc * j, -inc)
+		grid[grid_len][j].occupied = true if randi_range(0, 1) == 1 else false
 
 
-func _pop_last_row():
+func pop_last_row():
 	grid.pop_front()
 
 
-func _check_row(i, going_right, pos):
+func check_row(i, going_right, pos):
 	var min_x = 1000
 	var cell
 	
@@ -100,14 +90,35 @@ func _check_row(i, going_right, pos):
 	return cell
 
 
-func _check_column(j):
+func check_column(j):
 	for i in grid_rows:
 		if grid[i][j].occupied:
 			return grid[i][j]
 	
 	return null
 
+func clear_row(i):
+	for j in grid_columns:
+		grid[i][j].occupied = false
+		occupied_spaces.erase(grid[i][j].position)
 
+
+func clear_column(j):
+	for i in grid_rows:
+		grid[i][j].occupied = false
+		occupied_spaces.erase(grid[i][j].position)
+
+
+func refill_grid():
+	occupied_spaces = []
+	
+	for i in grid_rows:
+		for j in grid_columns:
+			grid[i][j].occupied = true if randi_range(0, 1) == 1 else false
+			if grid[i][j].occupied: occupied_spaces.append(grid[i][j].position)
+
+
+# Define grid cell class to be used exclusively by the grid
 class Cell :
 	var position
 	var occupied

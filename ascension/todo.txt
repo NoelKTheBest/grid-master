@@ -8,3 +8,6 @@ To Do:
 	player dies when they are no longer visible in the viewport
 
 - Set Player position accordingly to how blocks will interact with them
+
+- move block movement logic into Block.gd only if a better relationship can be established between
+	Block.gd and Game.gd
