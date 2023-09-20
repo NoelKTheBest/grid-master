@@ -1,10 +1,11 @@
 extends Node2D
 
 # Grab values from out grid node to setup the game. The grid needs to be initialized first
-@onready var grid_rows = $Grid.grid_rows
-@onready var grid_columns = $Grid.grid_columns
-@onready var grid_position = $Grid.initial_position
-@onready var grid_inc = $Grid.inc
+@onready var grid = $Grid
+@onready var grid_rows = grid.grid_rows
+@onready var grid_columns = grid.grid_columns
+@onready var grid_position = grid.initial_position
+@onready var grid_inc = grid.inc
 @onready var grid_outer_bounds = grid_position - Vector2(grid_inc, -grid_inc)
 
 var init_row
@@ -72,52 +73,52 @@ func _process(_delta):
 			row = clamp(row, 0, grid_rows - 1)
 	
 	if selecting_column:
-		$RigidBody2D.position = Vector2(_get_position("x"), grid_outer_bounds.y)
+		$RigidBody2D.position = Vector2(grid.get_axis(row, column, "x"), grid_outer_bounds.y)
 		$".".queue_redraw()
 	elif selecting_row:
 		if !going_right:
 			$RigidBody2D.position = Vector2(grid_outer_bounds.x + ((grid_columns + 1) * grid_inc),
-			 _get_position("y"))
+			 grid.get_axis(row, column, "y"))
 		else:
-			$RigidBody2D.position = Vector2(grid_outer_bounds.x, _get_position("y"))
+			$RigidBody2D.position = Vector2(grid_outer_bounds.x, grid.get_axis(row, column, "y"))
 		
 		$".".queue_redraw()
 	
 	if Input.is_action_just_pressed("set_block"):
-		if selecting_row:
-			print(row)
-			var cell = $Grid.check_row(row, going_right, $RigidBody2D.position)
-			if cell != null:
-				$RigidBody2D.position = cell.position
-				selecting_row = false
-		elif selecting_column:
-			print(column)
-			var cell = $Grid.check_column(column)
-			if cell != null:
-				$RigidBody2D.position = cell.position
-				selecting_column = false
+		set_block()
 	
 	if Input.is_action_just_pressed("delete"):
-		if selecting_row: $Grid.clear_row(row)
-		if selecting_column: $Grid.clear_column(column)
-		$Grid.queue_redraw()
+		if selecting_row: grid.clear_row(row)
+		if selecting_column: grid.clear_column(column)
+		grid.queue_redraw()
 	
 	if Input.is_action_just_pressed("refill"):
-		$Grid.refill_grid()
-		$Grid.queue_redraw()
+		grid.refill_grid()
+		grid.queue_redraw()
 
 
 func _draw():
 	if selecting_row:
-		draw_rect(Rect2(grid_position.x - (grid_inc / 2), _get_position("y") - (grid_inc / 2),
+		draw_rect(Rect2(grid_position.x - (grid_inc / 2), grid.get_axis(row, column, "y") - (grid_inc / 2),
 		 grid_columns * grid_inc, grid_inc), Color.ORANGE, false, 1)
 	
 	if selecting_column:
-		draw_rect(Rect2(_get_position("x") - (grid_inc / 2),
+		draw_rect(Rect2(grid.get_axis(row, column, "x") - (grid_inc / 2),
 		 grid_position.y  - (grid_rows * grid_inc) + (grid_inc / 2),
-		 grid_inc, grid_inc + (grid_rows * grid_inc)), Color.ORANGE, false, 1)
-	
+		 grid_inc, grid_inc + (grid_rows * grid_inc) - (grid_inc / 2)), Color.ORANGE, false, 1)
 
-func _get_position(axis):
-	if axis == "x" : return $Grid.grid[row][column].position.x
-	elif axis == "y" : return $Grid.grid[row][column].position.y
+
+func set_block():
+	if selecting_row:
+		var cell = grid.check_row(row, going_right, $RigidBody2D.position)
+		if cell != null:
+			$RigidBody2D.position = cell.position
+			print(cell.edges)
+			selecting_row = false
+	elif selecting_column:
+		var cell = grid.check_column(column)
+		if cell != null:
+			$RigidBody2D.position = cell.position
+			print(cell.edges)
+			selecting_column = false
+	
