@@ -9,7 +9,7 @@ To Do:
 - move block movement logic into Block.gd only if a better relationship can 
 	be established between Block.gd and Game.gd
 
-- Add a Grid Query method for finding the closest row/column, and another
+- Add a Grid Query method for finding the closest row, and another
 	method for finding the next available open space if a block is 
 	blocking the path
 
