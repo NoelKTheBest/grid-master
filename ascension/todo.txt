@@ -1,13 +1,17 @@
 To Do:
 
-- Create a visible on screen grid
-
-- Update Game.gd to check adjacent rows and columns
-
-- Add camera to scene and update position when the player is moved upwards on the screen. 
-	player dies when they are no longer visible in the viewport
+- Add camera to scene and update position when the player is moved upwards 
+	on the screen. player dies when they are no longer visible in the 
+	viewport
 
 - Set Player position accordingly to how blocks will interact with them
 
-- move block movement logic into Block.gd only if a better relationship can be established between
-	Block.gd and Game.gd
+- move block movement logic into Block.gd only if a better relationship can 
+	be established between Block.gd and Game.gd
+
+- Add a Grid Query method for finding the closest row/column, and another
+	method for finding the next available open space if a block is 
+	blocking the path
+
+- Add a Grid Manipulation method for activating a block upon collision
+	with the new block and make the previously static block active again
