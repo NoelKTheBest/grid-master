@@ -7,6 +7,8 @@ extends Node2D
 
 var grid = []
 var occupied_spaces = []
+var open_cells = []
+
 var block_scale
 var initial_position
 var inc
@@ -34,11 +36,15 @@ func _ready():
 		grid.append([])
 		for j in grid_columns:
 			grid[i].append(Cell.new()) # Set a starter value for each position
-			grid[i][j].position = initial_position + Vector2(inc * j, -inc * i)
-			grid[i][j].occupied = true if randi_range(0, 1) == 1 else false
+			var new_cell = grid[i][j]
+			new_cell.position = initial_position + Vector2(inc * j, -inc * i)
+			new_cell.row = i
+			new_cell.column = j
+			new_cell.occupied = true if randi_range(0, 1) == 1 else false
+			set_edges(i, j, new_cell)
 			
-			if grid[i][j].occupied:
-				occupied_spaces.append(Vector2(grid[i][j].position.x, grid[i][j].position.y))
+			if new_cell.occupied:
+				occupied_spaces.append(Vector2(new_cell.position.x, new_cell.position.y))
 
 
 func _draw():
@@ -46,6 +52,7 @@ func _draw():
 		draw_rect(Rect2(v.x - (25.0 / 2), v.y - (25.0 / 2), 25.0, 25.0), Color.GOLD)
 
 
+# ---------------------------- Grid Query ---------------------------- 
 func print_grid():
 	print("------------New Grid------------")
 	
@@ -56,36 +63,17 @@ func print_grid():
 	print("------------Done------------")
 
 
-func append_new_row():
-	grid.append([])
-	var grid_len = grid.size() - 1
-	
-	for j in grid_columns:
-		grid[grid_len].append(Cell.new())
-		grid[grid_len][j].position = grid[grid_len - 1][0].position + Vector2(inc * j, -inc)
-		grid[grid_len][j].occupied = true if randi_range(0, 1) == 1 else false
-
-
-func pop_last_row():
-	grid.pop_front()
-
-
 func check_row(i, going_right, pos):
 	var min_x = 1000
 	var cell
 	
 	for j in grid_columns:
 		if grid[i][j].occupied:
-			if !going_right:
-				var a = pos.x - grid[i][j].position.x
-				if a < min_x:
-					min_x = a
-					cell = grid[i][j]
-			else:
-				var a = grid[i][j].position.x - pos.x
-				if a < min_x:
-					min_x = a
-					cell = grid[i][j]
+			var a = grid[i][j].position.distance_to(pos)
+			if a < min_x:
+				min_x = a
+				cell = grid[i][j]
+				check_adjacent_cells(i, j)
 	
 	return cell
 
@@ -93,10 +81,66 @@ func check_row(i, going_right, pos):
 func check_column(j):
 	for i in grid_rows:
 		if grid[i][j].occupied:
+			check_adjacent_cells(i, j)
 			return grid[i][j]
 	
 	return null
 
+
+func get_cell(i, j):
+	return grid[i][j]
+
+
+# check all cells in a n x n square 
+func check_adjacent_cells(i, j):
+	open_cells = []
+	var col_start = j - 1
+	var col_end = j + 1
+	var row_start = i - 1
+	var row_end = i + 1
+	
+	if grid[i][j].edges.has("up"): row_end -= 1
+	if grid[i][j].edges.has("down"): row_start += 1
+	if grid[i][j].edges.has("left"): col_start += 1
+	if grid[i][j].edges.has("right"): col_end -= 1
+	
+	for n in range(row_start, row_end + 1):
+		for m in range(col_start, col_end + 1):
+			var cell = grid[n][m]
+			if !cell.occupied: open_cells.append(cell)
+	
+	print(open_cells)
+
+
+func get_min_distance(i, j, open_cells):
+	var min_dist = 1000
+	var new_cell
+	
+	for cell in open_cells:
+		var a = grid[i][j].position.distance_to(cell.position)
+		if a < min_dist:
+			min_dist = a
+			new_cell = cell
+	
+	return new_cell
+
+
+func set_edges(i, j, c):
+	if i == 0: c.edges.append("down")
+	if i == grid_rows - 1: c.edges.append("up")
+	if j == 0: c.edges.append("left")
+	if j == grid_columns - 1: c.edges.append("right")
+
+
+func get_edges(i, j):
+	return grid[i][j].edges
+
+
+func get_axis(i, j, axis):
+	return grid[i][j].position.x if axis == "x" else grid[i][j].position.y
+
+
+# ---------------------------- Grid Manipulation ---------------------------- 
 func clear_row(i):
 	for j in grid_columns:
 		grid[i][j].occupied = false
@@ -118,7 +162,24 @@ func refill_grid():
 			if grid[i][j].occupied: occupied_spaces.append(grid[i][j].position)
 
 
+func append_new_row():
+	grid.append([])
+	var grid_len = grid.size() - 1
+	
+	for j in grid_columns:
+		grid[grid_len].append(Cell.new())
+		grid[grid_len][j].position = grid[grid_len - 1][0].position + Vector2(inc * j, -inc)
+		grid[grid_len][j].occupied = true if randi_range(0, 1) == 1 else false
+
+
+func pop_last_row():
+	grid.pop_front()
+
+
 # Define grid cell class to be used exclusively by the grid
 class Cell :
 	var position
 	var occupied
+	var row
+	var column
+	var edges = []
