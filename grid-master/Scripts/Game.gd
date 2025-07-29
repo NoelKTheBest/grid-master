@@ -1,5 +1,8 @@
 extends Node2D
 
+@export var selecting_color = "861491"
+@export var not_selecting_color = "146891"
+
 # Grab values from out grid node to setup the game. The grid needs to be initialized first
 @onready var grid = $Grid
 @onready var grid_rows = grid.grid_rows
@@ -41,6 +44,7 @@ func _process(_delta):
 			going_right = true
 		elif Input.is_action_just_pressed("up"):
 			selecting_column = true
+		$RigidBody2D/CollisionShape2D/Sprite2D.modulate = Color(not_selecting_color)
 	elif selecting_column:
 		if Input.is_action_just_pressed("down"):
 			selecting_column = false
@@ -51,6 +55,7 @@ func _process(_delta):
 			column -= 1
 		
 		column = clamp(column, 0, grid_columns - 1)
+		$RigidBody2D/CollisionShape2D/Sprite2D.modulate = Color(selecting_color)
 	elif selecting_row:
 		if Input.is_action_just_pressed("right") and !going_right:
 			selecting_row = false
@@ -71,6 +76,7 @@ func _process(_delta):
 				row -= 1
 			
 			row = clamp(row, 0, grid_rows - 1)
+		$RigidBody2D/CollisionShape2D/Sprite2D.modulate = Color(selecting_color)
 	
 	if selecting_column:
 		$RigidBody2D.position = Vector2(grid.get_axis(row, column, "x"), grid_outer_bounds.y)
