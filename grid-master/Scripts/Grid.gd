@@ -45,6 +45,8 @@ func _ready():
 			
 			if new_cell.occupied:
 				occupied_spaces.append(Vector2(new_cell.position.x, new_cell.position.y))
+	
+	print_grid()
 
 
 func _draw():
@@ -112,6 +114,11 @@ func check_adjacent_cells(i, j):
 	print(open_cells)
 
 
+# Check all adjacent cells within a specific range
+func check_adjacent_cells_range():
+	pass
+
+
 func get_min_distance(i, j, open_cells):
 	var min_dist = 1000
 	var new_cell
@@ -125,6 +132,7 @@ func get_min_distance(i, j, open_cells):
 	return new_cell
 
 
+# Sets the edges for cells at the edge of the grid
 func set_edges(i, j, c):
 	if i == 0: c.edges.append("down")
 	if i == grid_rows - 1: c.edges.append("up")
@@ -176,6 +184,31 @@ func pop_last_row():
 	grid.pop_front()
 
 
+# Edits scale of a specific grid element
+func edit_call_scale(i, j):
+	pass
+
+
+func edit_grid_scale():
+	pass
+
+
+func append_layer():
+	pass
+
+
+func copy_to_layer(layer):
+	pass
+
+
+func cut_to_layer(layer):
+	pass
+
+
+func create_mask_from_selection(selected_cells):
+	pass
+
+
 # Define grid cell class to be used exclusively by the grid
 class Cell :
 	var position
@@ -183,3 +216,4 @@ class Cell :
 	var row
 	var column
 	var edges = []
+	var local_scale

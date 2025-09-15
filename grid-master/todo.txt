@@ -15,3 +15,21 @@ To Do:
 
 - Add a Grid Manipulation method for activating a block upon collision
 	with the new block and make the previously static block active again
+
+FORGET THE ABOVE FOR RIGHT NOW
+THIS IS WHAT WE WILL DO FOR THIS WEEK:
+	I want to use my idea of defining my own coordinate system to be able to create effects such as:
+		increasing the size of a range of pixels surrounding a specific pixel 
+	I would also like to add multiple layers to the grid so that I can copy and paste between layers
+	
+	The game that I would like to make will probably be another platformer that showcases the skill 
+	of being inventive with what i already have. Im not quite ready to get started on finishing 
+	"Fix Your Clothes"
+	
+	A demonstration of the tech is also good too
+	but make you have something fun to play with otherwise people won't care
+	You could do a platformer featuring a tilemap that dynamically shrinks and grows depending on 
+	where the player is. You won't have to worry much about the design of the game and make a simple 
+	game that is similar to a platformer where you can't see anything but here the world just sort 
+	of disappears around you instead of there just being a black image with a hole blocking the rest 
+	of the screen. It's mostly gimmicky but also a perfect demonstration of the tech in my opinion
